@@ -1,0 +1,6 @@
+models
+.idea
+processed_data
+upload_data
+*.pyc
+__pycache__
