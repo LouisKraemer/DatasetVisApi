@@ -8,14 +8,20 @@ import settings
 
 globalLabels = []
 
-def loadImage(filePath):
-    image = cv2.imread(filePath)
+def loadImage(base64_file):
+    # image = cv2.imread(filePath)
     # gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    return image
+    encoded_data = base64_file.split(',')[1]
+    nparr = np.fromstring(encoded_data.decode('base64'), np.uint8)
+    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    return img
 
 
-def resize_image(fileName, final_height, final_width):
-    image = loadImage('upload_data/' + fileName)
+def resize_image(base64_file, final_height, final_width):
+    # image = loadImage('upload_data/' + fileName)
+    encoded_data = base64_file.split(',')[1]
+    nparr = np.fromstring(encoded_data.decode('base64'), np.uint8)
+    image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     height, width, channels = image.shape
     final_ratio = float(final_width) / final_height
     ratio = float(width / height)
@@ -33,7 +39,8 @@ def resize_image(fileName, final_height, final_width):
         final = np.concatenate((image, blank_image), axis=0)
     else:
         final = image
-    resized_image = cv2.resize(final, (final_width, final_height))
+    resized_image = cv2.resize(final, (final_width, final_height)).astype(np.float32, casting='unsafe')
     if not os.path.isdir('processed_data'):
         os.makedirs('processed_data')
-    return cv2.imwrite('processed_data/' + fileName.split('.')[0] + '.jpg', resized_image, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
+    # return cv2.imwrite('processed_data/' + fileName.split('.')[0] + '.jpg', resized_image, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
+    return resized_image
