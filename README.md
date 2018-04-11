@@ -1,6 +1,6 @@
 # Dataviz API
 
-Cet API permet de tester des images sur un réseau de neurones et renvoit les prédictions pour chaque classe.
+Cette API permet de tester des images sur un réseau de neurones et renvoit les prédictions pour chaque classe.
 
 ## Dépendances
 
